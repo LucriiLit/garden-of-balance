@@ -1,706 +1,602 @@
-/* 基礎設定 */
+/* --- BASIC SETUP --- */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    -webkit-touch-callout: none;
-    -webkit-tap-highlight-color: transparent;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
-    font-family: 'Noto Sans TC', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    height: 100vh;
-    overflow: hidden;
-    position: relative;
+  font-family: "Caveat Brush", cursive;
+  background-image: url("img/playground-light-02.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
 }
 
-/* 通用螢幕樣式 */
+/* --- SCREENS --- */
 .screen {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 10;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
 }
 
 .screen.hidden {
-    display: none;
+  display: none;
 }
 
-.screen.overlay {
-    background: rgba(0, 0, 0, 0.8);
-    z-index: 100;
-}
-
-/* 開始畫面 */
+/* --- TITLE & BOARDS --- */
 .title-container {
-    text-align: center;
-    color: white;
-    padding: 2rem;
+  width: 53vh;
+  text-align: center;
+  color: white;
+}
+
+.board {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  aspect-ratio: 749/701;
+}
+
+.b-home {
+  background-image: url("img/scoreboard-top-01.png");
+  padding-top: 43%;
+}
+
+.b-over {
+  background-image: url("img/scoreboard-over-01.png");
+  padding-top: 43%; /* Adjusted to fit stats */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .title-container h1 {
-    font-size: 3rem;
-    font-weight: 900;
-    margin-bottom: 0.5rem;
-    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
-}
-
-.title-container h2 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-    opacity: 0.9;
+  font-size: 3rem;
+  font-weight: normal;
+  margin-bottom: 0.5rem;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+  padding: 0 5rem;
+  line-height: 3rem;
 }
 
 .title-container p {
-    font-size: 1.1rem;
-    margin-bottom: 2rem;
-    opacity: 0.8;
+  font-family: "Inter", sans-serif;
+  font-weight: 220;
+  font-size: 1.2rem;
+  margin-bottom: 1.4rem;
+  padding: 0 5rem;
 }
 
+/* --- FIREBASE INFO --- */
 .firebase-info {
-    margin: 1rem 0;
-    padding: 0.5rem 1rem;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 20px;
-    font-size: 0.9rem;
-    opacity: 0.9;
+  font-family: "Inter", sans-serif;
+  width: 400px;
+  color: #583423;
+  position: absolute;
+  top: 0;
+  margin: 1rem 0;
+  border-radius: 20px;
+  font-size: 0.7rem;
 }
 
 .firebase-info span {
-    font-size: 1rem;
+  font-size: 0.7rem;
+  font-weight: 600;
 }
 
-/* 按鈕樣式 */
+.firebase-status {
+  position: absolute;
+  top: 90px;
+  left: 1rem;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 45;
+  transition: all 0.3s ease;
+}
+
+.firebase-indicator {
+  font-size: 1rem;
+  animation: pulse 2s infinite;
+}
+
+.firebase-status.connected {
+  background: rgba(76, 175, 80, 0.8);
+}
+
+.firebase-status.connected .firebase-indicator {
+  animation: none;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* --- BUTTONS --- */
 .game-button {
-    background: linear-gradient(45deg, #ff6b6b, #ee5a6f);
-    border: none;
-    padding: 1rem 2rem;
-    margin: 0.5rem;
-    border-radius: 50px;
-    color: white;
-    font-size: 1.1rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(238, 90, 111, 0.4);
-    min-width: 200px;
+  background: transparent;
+  background-image: url(img/scoreboard-mid-01.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  aspect-ratio: 748/210;
+  width: 100%;
+  border: none;
+  font-family: "Caveat Brush", cursive;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 200px;
 }
 
 .game-button:hover,
 .game-button:active {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(238, 90, 111, 0.6);
+  transform: rotate(1deg);
+  scale: 1.01;
 }
 
 .game-button.secondary {
-    background: linear-gradient(45deg, #74b9ff, #0984e3);
-    box-shadow: 0 4px 15px rgba(116, 185, 255, 0.4);
+  background-image: url(img/scoreboard-bot-01.png);
+  aspect-ratio: 749/194;
 }
 
-.game-button.secondary:hover,
-.game-button.secondary:active {
-    box-shadow: 0 6px 20px rgba(116, 185, 255, 0.6);
-}
-
-/* 遊戲說明 */
+/* --- INSTRUCTIONS --- */
 .instructions-container {
-    background: rgba(255, 255, 255, 0.95);
-    padding: 2rem;
-    border-radius: 20px;
-    margin: 1rem;
-    max-width: 400px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  background: rgba(214, 231, 165, 0.95);
+  padding: 2rem 2rem 2rem 2.8rem;
+  border-radius: 20px;
+  margin: 1rem;
+  max-width: 400px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .instructions-container h2 {
-    color: #333;
-    text-align: center;
-    margin-bottom: 1.5rem;
-    font-size: 1.8rem;
+  color: #583423;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
 }
 
 .instructions-content p {
-    color: #555;
-    margin-bottom: 1rem;
-    line-height: 1.6;
-    font-size: 1rem;
+  font-family: "Inter", sans-serif;
+  color: #583423;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+  font-size: 1rem;
 }
 
-/* 遊戲主畫面 */
-#gameScreen {
-    background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
-}
-
-/* 遊戲UI */
+/* --- GAME UI (HUD) --- */
 .game-ui {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 80px;
-    background: rgba(0, 0, 0, 0.8);
-    display: flex;
-    align-items: center;
-    padding: 0 1rem;
-    z-index: 50;
+  position: absolute;
+  top: 0;
+  width: 110vh;
+  background-image: url(img/gamebaord-mid-01.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  aspect-ratio: 1440/229;
+  display: flex;
+  justify-content: center;
+  padding-top: 18px;
+  z-index: 150;
 }
 
-.ui-left, .ui-center, .ui-right {
-    flex: 1;
-    display: flex;
-    justify-content: center;
+.ui-center {
+  display: flex;
+  width: 90%;
+  top: 15%;
+  justify-content: space-between;
 }
 
-/* Firebase 狀態指示器 */
-.firebase-status {
-    position: absolute;
-    top: 90px;
-    left: 1rem;
-    background: rgba(0, 0, 0, 0.7);
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    z-index: 45;
-    transition: all 0.3s ease;
-}
-
-.firebase-indicator {
-    font-size: 1rem;
-    animation: pulse 2s infinite;
-}
-
-.firebase-status.connected {
-    background: rgba(76, 175, 80, 0.8);
-}
-
-.firebase-status.connected .firebase-indicator {
-    animation: none;
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-}
-
-.ui-left {
-    justify-content: flex-start;
-}
-
-.ui-right {
-    justify-content: flex-end;
-}
-
-.score-display, .time-display, .combo-display {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: white;
+.score-display,
+.time-display,
+.combo-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
 }
 
 .label {
-    font-size: 0.8rem;
-    opacity: 0.8;
-    margin-bottom: 0.2rem;
+  font-size: 0.8rem;
 }
 
-#scoreValue, #timeValue, #comboValue {
-    font-size: 1.2rem;
-    font-weight: 700;
-}
-
+#scoreValue,
+#timeValue,
 #comboValue {
-    color: #ffd700;
+  font-size: 1.3rem;
+  font-weight: 700;
 }
 
-/* 遊戲區域 */
+/* --- GAME AREA & LIVES --- */
 .game-area {
-    position: absolute;
-    top: 80px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: url('img/floor.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
+  position: absolute;
+  top: 0px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("img/playground-02.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
 }
 
-/* 9宮格容器 */
+.lower-gamearea {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.heart-container {
+  width: 180px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: -40px;
+}
+
+.heart {
+  background-image: url(img/heart-01.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  aspect-ratio: 800/800;
+  width: 80px;
+  margin: -10px;
+  z-index: 100;
+  pointer-events: none;
+}
+
+/* --- GRID SYSTEM --- */
+.grid-layer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.grid-top {
+  margin-top: 10vh;
+}
+.grid-bottom {
+  margin-bottom: 20px;
+}
+
 .grid-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    gap: 8px;
-    width: 100%;
-    height: 100%;
-    max-width: 400px;
-    max-height: 400px;
-    aspect-ratio: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  width: 100%;
+  height: 100%;
+  max-width: 400px;
+  max-height: 90px;
+  aspect-ratio: 1;
 }
 
-/* 網格單元格 */
+/* General Grid Cell */
 .grid-cell {
-    background: rgba(255, 255, 255, 0.05);
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    border-radius: 15px;
-    position: relative;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    backdrop-filter: blur(1px);
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
 
-.grid-cell:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.4);
-    transform: scale(0.95);
-    backdrop-filter: blur(2px);
+/* -- Top Grid Specifics (Dotted, Static) -- */
+.grid-top .grid-cell {
+  /* No background */
+  background: transparent;
+
+  /* Brown dashed outline */
+  border: 1px dashed #583423;
+  border-radius: 15px;
+  opacity: 0.8;
 }
 
-.grid-cell.active {
-    background: rgba(255, 107, 107, 0.3);
-    border-color: rgba(255, 107, 107, 0.7);
-    box-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
-    backdrop-filter: blur(3px);
+.grid-top .grid-cell:hover {
+  transform: scale(0.98);
+  background: rgba(88, 52, 35, 0.05);
+  border-color: #583423;
 }
 
-/* 地墊按壓效果 */
+.click-hint {
+  font-family: "Caveat Brush", cursive;
+  color: #583423;
+  font-size: 1.2rem;
+  opacity: 1;
+  pointer-events: none;
+}
+
+/* -- Bottom Grid Specifics (Glass, Active) -- */
+.grid-bottom .grid-cell {
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  backdrop-filter: blur(1px);
+}
+
+.grid-bottom .grid-cell:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: scale(0.95);
+  backdrop-filter: blur(2px);
+}
+
+/* Active Spot (Player is here) */
+.grid-cell.active-spot {
+  border-color: rgba(255, 215, 0, 0.8);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+}
+
+/* Mat Pressed Effect */
 .grid-cell.mat-pressed {
-    background: rgba(76, 175, 80, 0.4) !important;
-    border-color: rgba(76, 175, 80, 0.8) !important;
-    box-shadow: 0 0 25px rgba(76, 175, 80, 0.6) !important;
-    transform: scale(0.9) !important;
-    animation: mat-pulse 0.3s ease !important;
+  background: rgba(76, 175, 80, 0.4) !important;
+  border-color: rgba(76, 175, 80, 0.8) !important;
+  box-shadow: 0 0 25px rgba(76, 175, 80, 0.6) !important;
+  transform: scale(0.9) !important;
+  animation: mat-pulse 0.3s ease !important;
 }
 
 @keyframes mat-pulse {
-    0% { transform: scale(0.9); }
-    50% { transform: scale(0.95); }
-    100% { transform: scale(0.9); }
+  0% {
+    transform: scale(0.9);
+  }
+  50% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(0.9);
+  }
 }
 
-/* 格子內容容器 */
-.cell-content {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+/* --- GAME ENTITIES --- */
+.player1 {
+  position: absolute;
+  z-index: 100;
+  pointer-events: none;
+  background-image: url("img/monk-A-01.png");
+  background-size: contain;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  scale: 1.5;
+  margin-top: -24px;
+  transition: left 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    top 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* 蟑螂樣式 */
-.roach {
-    width: 70%;
-    height: 70%;
-    background-image: url('img/roach.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    z-index: 20;
-    user-select: none;
-    transform-origin: center;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-width: 50px;
-    min-height: 50px;
-    /* 確保圖片載入失敗時有備用顯示 */
-    background-color: transparent;
+.enemy {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  z-index: 90;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  pointer-events: none;
 }
 
-/* 圖片載入失敗時的備用樣式 */
-.roach::after {
-    content: '🪳';
-    display: none;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: clamp(25px, 4vw, 40px);
-    z-index: 1;
-}
-
-/* 如果背景圖片載入失敗，顯示emoji備用 */
-.roach:empty::after {
-    display: block;
-}
-
-.roach:hover {
-    transform: scale(1.1);
-}
-
-.roach.clicked {
-    animation: squish 0.3s ease-out forwards;
-}
-
-@keyframes squish {
-    0% {
-        transform: scale(1);
-        opacity: 1;
-    }
-    50% {
-        transform: scale(1.3) rotate(10deg);
-        opacity: 0.8;
-    }
-    100% {
-        transform: scale(0) rotate(180deg);
-        opacity: 0;
-    }
-}
-
-/* 暫停按鈕 */
+/* --- CONTROLS & OVERLAYS --- */
 .pause-button {
-    position: absolute;
-    top: 90px;
-    right: 1rem;
-    width: 50px;
-    height: 50px;
-    background: rgba(0, 0, 0, 0.7);
-    border: none;
-    border-radius: 50%;
-    color: white;
-    font-size: 1.2rem;
-    cursor: pointer;
-    z-index: 60;
-    transition: all 0.3s ease;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 100px;
+  background: transparent;
+  background-image: url(img/gamebaord-button-01.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  aspect-ratio: 159/229;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  z-index: 60;
+  transition: all 0.3s ease;
 }
 
 .pause-button:hover {
-    background: rgba(0, 0, 0, 0.9);
-    transform: scale(1.1);
+  transform: rotate(3deg);
 }
 
-/* 遊戲結束畫面 */
-.game-over-container {
-    background: rgba(255, 255, 255, 0.95);
-    padding: 2rem;
-    border-radius: 20px;
-    text-align: center;
-    margin: 1rem;
-    max-width: 400px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-}
-
-.game-over-container h2 {
-    color: #333;
-    margin-bottom: 1rem;
-    font-size: 2rem;
-}
-
-.final-score {
-    margin-bottom: 1.5rem;
-}
-
-.final-score p {
-    color: #666;
-    margin-bottom: 0.5rem;
-}
-
-.final-score span {
-    font-size: 3rem;
-    font-weight: 900;
-    color: #ff6b6b;
-    display: block;
-}
-
-.stats {
-    margin-bottom: 1.5rem;
-    padding: 1rem;
-    background: rgba(116, 185, 255, 0.1);
-    border-radius: 10px;
-}
-
-.stat-item {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 0.5rem;
-    color: #555;
-}
-
-.stat-label {
-    font-weight: 600;
-}
-
-.performance-message {
-    margin-bottom: 1.5rem;
-}
-
-.performance-message p {
-    font-size: 1.2rem;
-    color: #4CAF50;
-    font-weight: 600;
-}
-
-.button-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-/* 暫停畫面 */
 .pause-container {
-    background: rgba(255, 255, 255, 0.95);
-    padding: 2rem;
-    border-radius: 20px;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  padding: 2rem 2rem 2rem 2.8rem;
+  border-radius: 20px;
+  margin: 1rem;
+  max-width: 400px;
+  text-align: center;
 }
 
 .pause-container h2 {
-    color: #333;
-    margin-bottom: 1.5rem;
-    font-size: 1.8rem;
+  color: #583423;
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
 }
 
-/* 點擊效果 */
+/* --- GAME OVER STATS --- */
+.game-over-stats {
+  display: flex;
+  justify-content: center;
+  gap: 2.4rem;
+  width: 100%;
+}
+
+.stat-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.stat-label {
+  font-family: "Caveat Brush";
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+#finalScore,
+#finalCombo,
+#finalTime {
+  font-family: "Caveat Brush", cursive;
+  font-size: 2rem;
+  color: #fff;
+  text-shadow: 2px 2px 0px #583423;
+  line-height: 1;
+}
+
+#finalScore {
+  color: #ffd700;
+  font-size: 4rem;
+}
+
+/* --- EFFECTS & SOUND --- */
 #clickEffects {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1000;
 }
 
-.click-effect {
-    position: absolute;
-    pointer-events: none;
-    animation: clickEffect 0.6s ease-out forwards;
-}
-
-.click-effect.hit {
-    color: #4CAF50;
-    font-size: 2rem;
-    font-weight: 900;
-}
-
-.click-effect.miss {
-    color: #f44336;
-    font-size: 1.5rem;
-    font-weight: 700;
-}
-
-.click-effect.mat-hit {
-    color: #4CAF50;
-    font-size: 1.8rem;
-    font-weight: 900;
-    text-shadow: 0 0 10px rgba(76, 175, 80, 0.8);
-}
-
-.click-effect.mat-miss {
-    color: #FF9800;
-    font-size: 1.3rem;
-    font-weight: 700;
-    text-shadow: 0 0 8px rgba(255, 152, 0, 0.8);
-}
-
-@keyframes clickEffect {
-    0% {
-        opacity: 1;
-        transform: scale(0.5) translateY(0);
-    }
-    100% {
-        opacity: 0;
-        transform: scale(1.5) translateY(-50px);
-    }
-}
-
-/* 音效控制 */
 .sound-control {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    z-index: 1000;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
 }
 
 .sound-button {
-    width: 50px;
-    height: 50px;
-    background: rgba(0, 0, 0, 0.7);
-    border: none;
-    border-radius: 50%;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
+  width: 100px;
+  background: transparent;
+  background-image: url(img/gamebaord-button-01.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  aspect-ratio: 159/229;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .sound-button:hover {
-    background: rgba(0, 0, 0, 0.9);
+  transform: rotate(-3deg);
 }
 
 .sound-button.muted::after {
-    content: '🔇';
+  content: "🔇";
 }
 
-/* 手機適配 */
-@media (max-width: 480px) {
-    .title-container h1 {
-        font-size: 2.5rem;
-    }
-    
-    .title-container h2 {
-        font-size: 1.2rem;
-    }
-    
-    .game-button {
-        min-width: 180px;
-        padding: 0.8rem 1.5rem;
-        font-size: 1rem;
-    }
-    
-    .instructions-container,
-    .game-over-container,
-    .pause-container {
-        margin: 0.5rem;
-        padding: 1.5rem;
-    }
-    
-    .game-ui {
-        height: 70px;
-        padding: 0 0.5rem;
-    }
-    
-    .game-area {
-        top: 70px;
-        padding: 15px;
-    }
-    
-    .grid-container {
-        gap: 5px;
-        max-width: 350px;
-        max-height: 350px;
-    }
-    
-    .grid-cell {
-        border-radius: 10px;
-        border-width: 1px;
-    }
-    
-    .roach {
-        width: 80%;
-        height: 80%;
-        min-width: 40px;
-        min-height: 40px;
-    }
-    
-    .pause-button {
-        top: 80px;
-        width: 45px;
-        height: 45px;
-        font-size: 1rem;
-    }
-}
-
-/* 橫屏適配 */
-@media (orientation: landscape) and (max-height: 600px) {
-    .title-container h1 {
-        font-size: 2rem;
-    }
-    
-    .title-container p {
-        margin-bottom: 1rem;
-    }
-    
-    .instructions-container,
-    .game-over-container,
-    .pause-container {
-        max-height: 90vh;
-        overflow-y: auto;
-    }
-}
-
-/* 動畫效果 */
-@keyframes roachWiggle {
-    0%, 100% {
-        transform: rotate(0deg) scale(1);
-    }
-    25% {
-        transform: rotate(-8deg) scale(1.1);
-    }
-    50% {
-        transform: rotate(8deg) scale(0.9);
-    }
-    75% {
-        transform: rotate(-5deg) scale(1.05);
-    }
-}
-
-.roach.moving {
-    animation: roachWiggle 1.8s ease-in-out infinite;
-}
-
-/* 格子激活動畫 */
-@keyframes cellPulse {
-    0%, 100% {
-        background: rgba(255, 107, 107, 0.3);
-        box-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
-        backdrop-filter: blur(3px);
-    }
-    50% {
-        background: rgba(255, 107, 107, 0.4);
-        box-shadow: 0 0 30px rgba(255, 107, 107, 0.7);
-        backdrop-filter: blur(4px);
-    }
-}
-
-.grid-cell.active {
-    animation: cellPulse 1s ease-in-out infinite;
-}
-
-/* 連擊效果 */
-@keyframes comboGlow {
-    0%, 100% {
-        text-shadow: 0 0 5px #ffd700;
-    }
-    50% {
-        text-shadow: 0 0 20px #ffd700, 0 0 30px #ffd700;
-    }
-}
-
-.combo-glow {
-    animation: comboGlow 0.5s ease-in-out;
-}
-
-/* 載入動畫 */
+/* --- ANIMATIONS --- */
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .fade-in {
-    animation: fadeIn 0.5s ease-out;
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* --- MEDIA QUERIES --- */
+@media (max-width: 480px) {
+  .title-container h1 {
+    font-size: 2.5rem;
+  }
+  .title-container h2 {
+    font-size: 1.2rem;
+  }
+
+  .instructions-container,
+  .pause-container {
+    margin: 0.5rem;
+    padding: 1.5rem;
+  }
+
+  .game-ui {
+    height: 70px;
+    padding: 0 0.5rem;
+  }
+  .game-area {
+    top: 70px;
+    padding: 15px;
+  }
+
+  .grid-container {
+    gap: 5px;
+    max-width: 350px;
+    max-height: 350px;
+  }
+  .grid-cell {
+    border-radius: 10px;
+    border-width: 1px;
+  }
+
+  .pause-button {
+    top: 80px;
+    width: 45px;
+    height: 45px;
+    font-size: 1rem;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 600px) {
+  .title-container h1 {
+    font-size: 2rem;
+  }
+  .title-container p {
+    margin-bottom: 1rem;
+  }
+
+  .instructions-container,
+  .pause-container {
+    max-height: 90vh;
+    overflow-y: auto;
+  }
 }

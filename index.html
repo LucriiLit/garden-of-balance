@@ -1,166 +1,214 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Roach Crusher Game</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
-    
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+    <title>Garden of Balance Game</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat+Brush&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-    
+
     <!-- Firebase Configuration -->
     <script src="firebase-config.js"></script>
     <!-- 防止雙擊縮放 -->
     <style>
-        * {
-            -webkit-user-select: none;
-            -webkit-touch-callout: none;
-            -webkit-tap-highlight-color: transparent;
-        }
+      * {
+        -webkit-user-select: none;
+        -webkit-touch-callout: none;
+        -webkit-tap-highlight-color: transparent;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Game Start Screen -->
     <div id="startScreen" class="screen">
-        <div class="title-container">
-            <h1>🪳 Roach Crusher</h1>
-            <h2>Grid Edition</h2>
-            <p>Tap the roaches quickly to crush them!</p>
-            <div class="firebase-info">
-                <p><span id="startFirebaseIndicator">🔴</span> <span id="startFirebaseText">Connecting to Mat Control...</span></p>
-            </div>
-            <button id="startButton" class="game-button">Start Game</button>
-            <button id="instructionsButton" class="game-button secondary">Instructions</button>
+      <div class="title-container">
+        <div class="firebase-info">
+          <p>
+            <span id="startFirebaseIndicator">🔴</span>
+            <span id="startFirebaseText">Connecting to Mat Control...</span>
+          </p>
         </div>
+        <div class="board b-home">
+          <h1>
+            Garden of <br />
+            Balance
+          </h1>
+          <p>
+            <br />Avoid the appearing <br />
+            obstacles!
+          </p>
+        </div>
+        <button id="startButton" class="game-button">Start Game</button>
+        <button id="instructionsButton" class="game-button secondary">
+          Instructions
+        </button>
+      </div>
     </div>
 
     <!-- Game Instructions Screen -->
     <div id="instructionsScreen" class="screen hidden">
-        <div class="instructions-container">
-            <h2>How to Play</h2>
-            <div class="instructions-content">
-                <p>🎯 <strong>Goal:</strong> Crush as many roaches as possible within the time limit</p>
-                <p>👆 <strong>Controls:</strong> Tap the roaches that appear in the grid cells</p>
-                <p>⏱️ <strong>Time:</strong> Each game lasts 60 seconds</p>
-                <p>⚡ <strong>Combo:</strong> Consecutive hits earn combo bonuses</p>
-                <p>💨 <strong>Tip:</strong> Roaches wiggle around - be quick and accurate!</p>
-            </div>
-            <button id="backButton" class="game-button">Back</button>
+      <div class="instructions-container">
+        <h2>How to Play</h2>
+        <div class="instructions-content">
+          <p>
+            <strong>Goal:</strong> Survive as long as possible and build a high
+            score!
+          </p>
+          <p>
+            <strong>Control:</strong> Click the <strong>Bottom Grid</strong> to
+            move your Monk.
+          </p>
+          <p>
+            <strong>Attack:</strong> Click the <strong>Top Grid</strong> to drop
+            obstacles. Dodge them to earn points!
+          </p>
+          <p>
+            <strong>Powerups:</strong>
+            <br />🌸 <strong>Flowers:</strong> Increase Combo Multiplier
+            <br />🛡️ <strong>Shield:</strong> Protects against one hit <br />❤️
+            <strong>Heart:</strong> Restores a life
+          </p>
         </div>
+        <button id="backButton" class="game-button">Back</button>
+      </div>
     </div>
 
     <!-- Main Game Screen -->
     <div id="gameScreen" class="screen hidden">
-        <!-- Game Top UI -->
-        <div class="game-ui">
-            <div class="ui-left">
-                <div class="score-display">
-                    <span class="label">Score</span>
-                    <span id="scoreValue">0</span>
-                </div>
+      <!-- Game Top UI -->
+      <div class="game-ui">
+        <div class="ui-center">
+          <div class="time-display">
+            <span class="label">TIME</span>
+            <span id="timeValue">60</span>
+          </div>
+          <div class="score-display">
+            <span class="label">SCORE</span>
+            <span id="scoreValue">0</span>
+          </div>
+          <div class="score-display">
+            <div class="combo-display">
+              <span class="label">COMBO</span>
+              <span id="comboValue">x 0</span>
             </div>
-            <div class="ui-center">
-                <div class="time-display">
-                    <span class="label">Time</span>
-                    <span id="timeValue">60</span>
-                </div>
-            </div>
-            <div class="ui-right">
-                <div class="combo-display">
-                    <span class="label">Combo</span>
-                    <span id="comboValue">0</span>
-                </div>
-            </div>
+          </div>
         </div>
-        
-        <!-- Firebase Status Indicator -->
-        <div class="firebase-status" id="firebaseStatus">
-            <span class="firebase-indicator" id="firebaseIndicator">🔴</span>
-            <span class="firebase-text">Mat Control: Disconnected</span>
+      </div>
+
+      <!-- Firebase Status Indicator
+      <div class="firebase-status" id="firebaseStatus">
+        <span class="firebase-indicator" id="firebaseIndicator">🔴</span>
+        <span class="firebase-text">Mat Control: Disconnected</span>
+      </div> -->
+
+      <!-- Game Area - 3x3 Grid -->
+      <div id="gameArea" class="game-area">
+        <div class="grid-layer grid-top">
+          <div class="grid-container">
+            <div class="grid-cell" data-cell="A">
+              <span class="click-hint">click</span>
+            </div>
+            <div class="grid-cell" data-cell="B">
+              <span class="click-hint">click</span>
+            </div>
+            <div class="grid-cell" data-cell="C">
+              <span class="click-hint">click</span>
+            </div>
+            <div class="grid-cell" data-cell="D">
+              <span class="click-hint">click</span>
+            </div>
+          </div>
         </div>
 
-        <!-- Game Area - 3x3 Grid -->
-        <div id="gameArea" class="game-area">
+        <div class="lower-gamearea">
+          <div class="grid-layer grid-bottom">
             <div class="grid-container">
-                <div class="grid-cell" data-cell="0">
-                    <div class="cell-content"></div>
-                </div>
-                <div class="grid-cell" data-cell="1">
-                    <div class="cell-content"></div>
-                </div>
-                <div class="grid-cell" data-cell="2">
-                    <div class="cell-content"></div>
-                </div>
-                <div class="grid-cell" data-cell="3">
-                    <div class="cell-content"></div>
-                </div>
-                <div class="grid-cell" data-cell="4">
-                    <div class="cell-content"></div>
-                </div>
-                <div class="grid-cell" data-cell="5">
-                    <div class="cell-content"></div>
-                </div>
-                <div class="grid-cell" data-cell="6">
-                    <div class="cell-content"></div>
-                </div>
-                <div class="grid-cell" data-cell="7">
-                    <div class="cell-content"></div>
-                </div>
-                <div class="grid-cell" data-cell="8">
-                    <div class="cell-content"></div>
-                </div>
+              <div class="grid-cell" data-cell="0">
+                <div class="cell-content"></div>
+              </div>
+              <div class="grid-cell" data-cell="1">
+                <div class="cell-content"></div>
+              </div>
+              <div class="grid-cell" data-cell="2">
+                <div class="cell-content"></div>
+              </div>
+              <div class="grid-cell" data-cell="3">
+                <div class="cell-content"></div>
+              </div>
             </div>
+          </div>
+          <div class="heart-container">
+            <div class="heart"></div>
+            <div class="heart"></div>
+            <div class="heart"></div>
+          </div>
         </div>
+      </div>
 
-        <!-- 暫停按鈕 -->
-        <button id="pauseButton" class="pause-button">⏸️</button>
+      <!-- 暫停按鈕 -->
+      <button id="pauseButton" class="pause-button">⏸️</button>
     </div>
 
     <!-- Game Over Screen -->
     <div id="gameOverScreen" class="screen hidden">
-        <div class="game-over-container">
-            <h2>Game Over!</h2>
-            <div class="final-score">
-                <p>Final Score</p>
-                <span id="finalScore">0</span>
+      <div class="title-container">
+        <div class="board b-over">
+          <h1>Game Over!</h1>
+
+          <div class="game-over-stats">
+            <div class="stat-box">
+              <span class="stat-label">TIME</span>
+              <span id="finalTime">0</span>
             </div>
-            <div class="stats">
-                <div class="stat-item">
-                    <span class="stat-label">Roaches Killed</span>
-                    <span id="roachesKilled">0</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Max Combo</span>
-                    <span id="maxCombo">0</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Accuracy</span>
-                    <span id="accuracy">0%</span>
-                </div>
+            <div class="stat-box">
+              <span class="stat-label">SCORE</span>
+              <span id="finalScore">0</span>
             </div>
-            <div class="performance-message">
-                <p id="performanceText">Great job!</p>
+            <div class="stat-box">
+              <span class="stat-label">COMBO</span>
+              <span id="finalCombo">0</span>
             </div>
-            <div class="button-group">
-                <button id="playAgainButton" class="game-button">Play Again</button>
-                <button id="mainMenuButton" class="game-button secondary">Main Menu</button>
-            </div>
+          </div>
         </div>
+        <button id="playAgainButton" class="game-button">Play Again</button>
+        <button id="mainMenuButton" class="game-button secondary">
+          Main Menu
+        </button>
+      </div>
     </div>
 
     <!-- Pause Screen -->
     <div id="pauseScreen" class="screen hidden overlay">
-        <div class="pause-container">
-            <h2>Game Paused</h2>
-            <div class="button-group">
-                <button id="resumeButton" class="game-button">Resume</button>
-                <button id="restartButton" class="game-button secondary">Restart</button>
-                <button id="quitButton" class="game-button secondary">Quit</button>
-            </div>
+      <div class="pause-container">
+        <h2>Game Paused</h2>
+        <div class="button-group">
+          <button id="resumeButton" class="game-button">Resume</button>
+          <button id="restartButton" class="game-button secondary">
+            Restart
+          </button>
+          <button id="quitButton" class="game-button secondary">Quit</button>
         </div>
+      </div>
     </div>
 
     <!-- Click Effects -->
@@ -168,9 +216,9 @@
 
     <!-- Sound Control -->
     <div class="sound-control">
-        <button id="soundToggle" class="sound-button">🔊</button>
+      <button id="soundToggle" class="sound-button">🔊</button>
     </div>
 
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
