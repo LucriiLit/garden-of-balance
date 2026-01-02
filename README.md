@@ -1,212 +1,119 @@
-# 🪳 Roach Crusher Game
+🌿 Garden of Balance
+A mobile-optimized, physical-digital hybrid game. Guide a Monk through a garden, dodging falling obstacles, collecting power-ups, and building combos using either touch controls or smart floor mats.
 
-A mobile-optimized web-based roach crushing game with a 3x3 grid layout, featuring Firebase integration for smart floor mat controls.
+🎮 Game Features
+Dual-Grid Mechanics:
 
-## 🎮 Game Features
+Top Grid (Attack): Click the dashed cells to manually spawn obstacles.
 
-- **9-Grid Design**: Classic 3x3 grid layout for strategic and challenging gameplay
-- **🔥 Firebase Integration**: Real-time smart floor mat control system
-- **📡 IoT Control**: Support for physical mat inputs (GroupId: 1, MatNumber: 1-9)
-- **Mobile Optimized**: Designed specifically for touch screens with responsive layout
-- **Dual Input**: Both touch/mouse and smart mat controls
-- **Rich Audio**: Built-in Web Audio API sound system
-- **Combo System**: Consecutive hits earn extra score bonuses
-- **Visual Feedback**: Cell activation effects and click animations with mat-specific effects
-- **Real-time Status**: Firebase connection indicator and mat activity feedback
-- **Statistics**: Detailed game performance tracking
-- **Pause Function**: Support for game pause and resume
+Bottom Grid (Move): Click or step to move the Monk.
 
-## 🕹️ How to Play
+Infinite Survival: The game lasts as long as you have lives. Time counts upward!
 
-1. **Objective**: Crush as many roaches as possible within 60 seconds
-2. **Controls**: 
-   - **Touch/Mouse**: Tap roaches directly on screen
-   - **Smart Mats**: Step on physical mats 1-9 to control corresponding grid cells
-3. **Strategy**:
-   - Roaches only appear in empty cells
-   - Each cell can only contain one roach at a time
-   - Tapping empty cells results in a miss and resets combo count
-4. **Scoring**:
-   - Base score per roach: 10 points
-   - Combo bonus: Extra 5 points for every 5 consecutive hits
-   - Missing resets your combo count
+❤️ Life System: Start with 3 hearts. Lose one if hit by an obstacle without a shield.
 
-## 📱 Technical Features
+🛡️ Power-up System:
 
-### Mobile Adaptation
-- Responsive design that automatically adapts to different screen sizes
-- Prevents double-tap zoom and page scrolling
-- Supports both landscape and portrait orientations
+Shield: Grants immunity to one hit.
 
-### Game Mechanics
-- 3x3 grid system with roaches randomly appearing in cells
-- Custom roach sprite graphics with fallback emoji support
-- Cell activation effects and roach wiggling animations
-- Click effects and audio feedback
-- Progressive difficulty (roach spawn rate increases over time)
-- Intelligent cell management (prevents overlapping spawns)
-- Image preloading for smooth gameplay experience
+Hearts: Restores lost health.
 
-### Performance Optimization
-- Efficient DOM operations
-- Memory management and garbage collection
-- Smooth animation effects
+Flowers: Increases the Combo counter.
 
-## 🚀 Quick Start
+🔥 Firebase Integration: Real-time smart floor mat control system.
 
-1. Open `index.html` directly in your browser
-2. Or use a local server:
-   ```bash
-   # Using Python
-   python -m http.server 8000
-   
-   # Using Node.js
-   npx http-server
-   ```
-3. Access the game on your mobile browser
+Rich Audio: Background ambient music and specific sound effects for every entity.
 
-## 📁 File Structure
+Combo Scoring: Score points when obstacles successfully pass the screen (dodge). Points are multiplied by your Combo count.
 
-```
-Roach_Crusher/
-├── index.html                  # Main game page
-├── style.css                   # Stylesheet with Firebase status styles
-├── script.js                   # Game logic with Firebase integration
-├── firebase-config.js          # Firebase configuration (DO NOT commit to Git)
-├── firebase-config.template.js # Firebase configuration template
-├── .gitignore                  # Git ignore rules
-├── mat_tester.html            # Firebase mat testing tool
-├── FIREBASE_INTEGRATION.md    # Firebase integration documentation
-├── img/                       # Image assets
-│   ├── roach.png              # Roach sprite image
-│   └── floor.png              # Game background image
-└── README.md                  # Main documentation
-```
+🕹️ How to Play
+1. Objective
+Survive as long as possible! Your score increases every time an obstacle falls off the bottom of the screen without hitting you.
 
-## 🔥 Firebase Smart Mat Integration
+2. Controls
+Movement (Player 1):
 
-This game supports real-time control via smart floor mats through Firebase Realtime Database.
+Touch/Mouse: Click the Bottom Grid cells (Solid/Glass style).
 
-### Initial Setup
+Smart Mats: Step on physical mats 1-4.
 
-**IMPORTANT: Firebase Configuration**
+Spawning (Game Master/Attacker):
 
-Before running the game, you need to set up your Firebase configuration:
+Touch/Mouse: Click the Top Grid cells (Dashed Brown Outline) to drop enemies in that column.
 
-1. **Copy the template file:**
-   ```bash
-   cp firebase-config.template.js firebase-config.js
-   ```
+3. Items & Enemies
+The Monk: Your character. Glides smoothly between positions.
 
-2. **Edit `firebase-config.js`** and replace the placeholders with your actual Firebase project credentials
+Obstacles (Avoid!): Hornet 🐝, Snail 🐌, Rotten Fruit 🍎, Poop 💩.
 
-3. **Verify `.gitignore`** includes `firebase-config.js` to prevent pushing credentials to Git
+Power-ups (Collect!):
 
-> ⚠️ **Security Note:** `firebase-config.js` contains sensitive API keys and should NEVER be committed to version control.
+🌸 Flowers: Adds +1 to your Combo Multiplier.
 
-### Mat Configuration
-- **Group ID**: 1 (only monitors group 1 events)
-- **Mat Numbers**: 1-9 (corresponding to 3x3 grid positions)
-- **Real-time**: Instant response to mat presses
+🛡️ Shield: Changes Monk appearance and absorbs 1 hit.
 
-### Mat Layout
-```
-1 | 2 | 3    (Top Row)
----------
-4 | 5 | 6    (Middle Row)
----------
-7 | 8 | 9    (Bottom Row)
-```
+❤️ Heart: Spawns only if you have missing health.
 
-### Firebase Setup
-The game connects to Firebase Realtime Database and monitors:
-```javascript
-mat_presses: {
-  "-UniqueId": {
-    timestamp: "2025/11/11 下午06:15:25",
-    groupId: 1,           // Only group 1 is processed
-    matNumber: 5,         // Mat number 1-9
-    date: "2025-11-11T10:15:25.043Z",
-    sessionId: "session_1762856124316_dfo9spzoc"
-  }
-}
-```
+📱 Technical Features
+Asset Management
+Audio: Uses specific MP3/WAV files for immersive feedback (sfx-nature-01, sfx-angel-01, etc.).
 
-### Testing Tool
-Use `mat_tester.html` to simulate mat presses:
-- **Manual Testing**: Click buttons 1-9 to simulate mat presses
-- **Keyboard**: Press keys 1-9 for quick testing
-- **Auto Tests**: Sequential and random test modes
-- **Real-time Log**: View Firebase events and responses
+Visuals: Custom sprites for the Monk (monk-A-01.png), enemies, and dynamic heart status (emptyheart-01.png).
 
-## 🎯 Performance Rankings
+Firebase Smart Mat Integration
+The game connects to a Firebase Realtime Database to receive input from physical floor mats.
 
-- **🏆 Roach Exterminator**: Score > 1000 and Accuracy > 80%
-- **🎯 Excellent Hunter**: Score > 500 and Accuracy > 60%
-- **👍 Good Start**: Score > 200
-- **💪 Keep Trying**: Other cases
+Mat Configuration:
 
-## 🔧 Customization
+Group ID: 1
 
-### Adjust Game Difficulty
-You can modify the following parameters in `script.js`:
+Active Mats: 1, 2, 3, 4 (Mapped to Grid indices 0, 1, 2, 3)
 
-```javascript
-// Game duration (seconds)
-this.timeLeft = 60;
+🚀 Quick Start
+Firebase Setup:
 
-// Roach spawn interval
-getSpawnInterval() {
-    const baseInterval = 1500;  // Base interval (milliseconds)
-    const minInterval = 600;    // Minimum interval
-    // ...
-}
+Copy firebase-config.template.js to firebase-config.js.
 
-// Roach lifespan
-setTimeout(() => {
-    this.removeRoach(roach);
-}, 3000 + Math.random() * 2000);  // 3-5 seconds
-```
+Add your Firebase credentials.
 
-### Modify Scoring System
-```javascript
-// Base score
-const baseScore = 10;
+Note: Ensure your domain is whitelisted in Firebase Console -> Authentication -> Authorized Domains.
 
-// Combo bonus
-const comboBonus = Math.floor(this.gameState.combo / 5) * 5;
-```
+Run Locally: Open index.html in your browser.
 
-### Customize Game Assets
+Or serve locally:
 
-#### Roach Image
-To replace the roach image:
-1. Replace `img/roach.png` with your custom image
-2. Recommended image size: 128x128 pixels or larger
-3. Supported formats: PNG (recommended for transparency), JPG, SVG
-4. The game includes emoji fallback if image fails to load
+Bash
 
-#### Background Image
-To customize the game background:
-1. Replace `img/floor.png` with your custom background
-2. Recommended resolution: 1920x1080 or higher
-3. The image will automatically scale to fit different screen sizes
-4. Use `background-size: cover` for best results
+npx http-server
+Upload to GitHub:
 
-## 🌟 Future Features
+Upload index.html, style.css, script.js, firebase-config.js, img/ folder, and audio/ folder.
 
-- [ ] Multiple roach types
-- [ ] Power-up system
-- [ ] Local high score records
-- [ ] Social sharing functionality
-- [ ] More sound effects and background music
-- [ ] Achievement system
+Enable GitHub Pages in repository settings.
 
-## 📜 License
+📁 File Structure
+Garden_of_Balance/
+├── index.html                  # Main game structure
+├── style.css                   # Styles (Glassmorphism, Grid Layout)
+├── script.js                   # Game logic (Physics, Spawning, Scoring)
+├── firebase-config.js          # Firebase credentials (Ignored by Git)
+├── img/                        # Graphics assets
+│   ├── monk-A-01.png           # Player sprite
+│   ├── heart-01.png            # UI assets
+│   ├── playground-02.png       # Backgrounds
+│   └── ... (enemies/items)
+└── audio/                      # Sound assets
+    ├── sfx-nature-01.wav       # BGM
+    ├── sfx-hornet-01.mp3       # Enemy sounds
+    └── ...
+🔧 Customization
+You can adjust game balance in script.js:
 
-MIT License - Free to use and modify
+Speed: Change enemy.dataset.speed = 2 to make items fall faster/slower.
 
----
+Spawn Rate: Modify the 15000 (15s) interval in startPowerupSpawner.
 
-Enjoy crushing roaches! 🪳💥# garden-of-balance
-# garden-of-balance
+Lives: Change this.lives = 3 in the GameState class.
+
+📜 License
+MIT License - Free to use and modify.# garden-of-balance
